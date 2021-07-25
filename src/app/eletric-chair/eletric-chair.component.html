@@ -1,0 +1,24 @@
+<form>
+  <div class="form-group form-inline">
+    <input class="form-control" type="text" [formControl]="filter" placeholder="Search by Item name or Persona name"/>
+  </div>
+</form>
+
+<table class="table table-striped">
+  <thead>
+  <tr>
+    <th scope="col">Persona</th>
+    <th scope="col">Item</th>
+    <th scope="col">Item On Alarm</th>
+    <th scope="col">Persona Type</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let data of itemizations$ | async; index as i">
+    <td>{{data.persona}}</td>
+    <td>{{data.item}}</td>
+    <td>{{data.itemFusionAlarm}}</td>
+    <td>{{data.type.name}}</td>
+  </tr>
+  </tbody>
+</table>
