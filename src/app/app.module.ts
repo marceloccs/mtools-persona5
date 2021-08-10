@@ -7,12 +7,14 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { EletricChairComponent } from './eletric-chair/eletric-chair.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { YesNoPipe } from './yes-no.pipe';
+import { QuizResponsesComponent } from './quiz-responses/quiz-responses.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     EletricChairComponent,
-    YesNoPipe
+    YesNoPipe,
+    QuizResponsesComponent
   ],
   imports: [
     BrowserModule,

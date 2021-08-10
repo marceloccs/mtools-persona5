@@ -1,0 +1,24 @@
+<form>
+  <div class="form-group form-inline">
+    <input class="form-control" type="text" [formControl]="filter" placeholder="Search by questions"/>
+  </div>
+</form>
+
+<table class="table table-striped">
+  <thead>
+  <tr>
+    <th scope="col">Date</th>
+    <th scope="col">Question</th>
+    <th scope="col">Response</th>
+    <th scope="col">Exame</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let data of responses$ | async; index as i">
+    <td>{{data.day}}/{{data.month}}</td>
+    <td>{{data.question}}</td>
+    <td>{{data.responseOption}}){{data.response}}</td>
+    <td>{{data.exame|yesNo}}</td>
+  </tr>
+  </tbody>
+</table>

@@ -13,7 +13,7 @@ export class AppComponent {
     { title: 'Eletric Chair', fragment: 'eletric-chair', dasabled: false },
     { title: 'Fusion Chart', fragment: 'fusion-chart', dasabled: true },
     { title: 'Confidances', fragment: 'confidances', dasabled: true },
-    { title: 'Quiz Responses', fragment: 'quiz-responses', dasabled: true }
+    { title: 'Quiz Responses', fragment: 'quiz-responses', dasabled: false }
   ];
 
   constructor(public route: ActivatedRoute) {}
