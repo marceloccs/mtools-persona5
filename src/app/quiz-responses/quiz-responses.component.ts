@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ClassroomQuizModel } from "src/module/classrom-quiz-model";
 
-import { Observable } from 'rxjs';
-import { map, startWith } from 'rxjs/operators';
+import { combineLatest, Observable } from 'rxjs';
+import { combineAll, map, startWith } from 'rxjs/operators';
 import { FormControl } from '@angular/forms';
 import { QuizResponseData } from 'src/data/quiz-responses/quiz-responses-data';
+import { CombineLatestSubscriber } from 'rxjs/internal/observable/combineLatest';
 
 
 @Component({
@@ -15,13 +16,17 @@ import { QuizResponseData } from 'src/data/quiz-responses/quiz-responses-data';
 export class QuizResponsesComponent implements OnInit {
 
   responses$: Observable<ClassroomQuizModel[]>;
-  filter = new FormControl('');
+  filterQuestions = new FormControl('');
+  filterExams = new FormControl(false);
 
   constructor() {
-     this.responses$ = this.filter.valueChanges.pipe(
-       startWith(''),
-       map(text => searchQuestion(text))
-     );
+    this.responses$ = CombineLatestSubscriber(
+      this.filterExams.valueChanges.pipe(
+        startWith(''),
+        map(text => searchQuestion(text))
+      )
+    );
+    };
   }
 
   ngOnInit(): void {
@@ -29,16 +34,33 @@ export class QuizResponsesComponent implements OnInit {
 
 }
 
- function searchQuestion(text: string): ClassroomQuizModel[] {
-   return QuizResponseData.filter(data => {
-     const term = text.toLowerCase();
-     return data.question.toLowerCase().includes(term)
-         || data.responseOption.toLowerCase().includes(term);
-   }).sort(comparerData);
- }
+function searchQuestion(text: string): ClassroomQuizModel[] {
+  return QuizResponseData.filter(data => {
+    const term = text.toLowerCase();
+    return data.question.toLowerCase().includes(term)
+      || data.responseOption.toLowerCase().includes(term);
+  }).sort(comparerData);
+}
 
- function comparerData(a :ClassroomQuizModel,b :ClassroomQuizModel){
-   if(a.day < b.day) return 1;
-   if(a.day > b.day) return -1;
-   return 0;
- }
+function searchExams(value: boolean): ClassroomQuizModel[] {
+  return QuizResponseData.filter(data => {
+    if(value){
+      return data.exame;
+    }
+    return data;
+  }).sort(comparerData);
+}
+
+function comparerData(a: ClassroomQuizModel, b: ClassroomQuizModel) {
+  var baseNumber = 0;
+  if (a.newYear && !b.newYear) baseNumber = baseNumber + 4;
+  else if (!a.newYear && b.newYear) baseNumber = baseNumber - 4;
+
+  if (a.month<b.month) baseNumber = baseNumber + 2;
+  else if (a.month>b.month) baseNumber = baseNumber - 2;
+
+  if (a.day < b.day) baseNumber = baseNumber + 1;
+  else if (a.day > b.day) baseNumber = baseNumber - 1;
+
+  return (baseNumber)*-1;
+}

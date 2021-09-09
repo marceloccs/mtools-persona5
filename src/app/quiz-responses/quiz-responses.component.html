@@ -1,6 +1,8 @@
 <form>
   <div class="form-group form-inline">
-    <input class="form-control" type="text" [formControl]="filter" placeholder="Search by questions"/>
+    <input class="form-control" type="text" [formControl]="filterQuestions" placeholder="Search by questions"/>
+    <label>Exams Questions ?</label>
+    <input [formControl]="filterExams" type="checkbox">
   </div>
 </form>
 
@@ -17,7 +19,7 @@
   <tr *ngFor="let data of responses$ | async; index as i">
     <td>{{data.day}}/{{data.month}}</td>
     <td>{{data.question}}</td>
-    <td>{{data.responseOption}}){{data.response}}</td>
+    <td><pre>{{data.response}}</pre></td>
     <td>{{data.exame|yesNo}}</td>
   </tr>
   </tbody>
